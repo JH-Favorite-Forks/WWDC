@@ -51,9 +51,12 @@ final class VideoPlayerViewController: NSViewController {
     var playerWillRestoreUserInterfaceForPictureInPictureStop: (() -> Void)?
     var playerWillExitFullScreen: (() -> Void)?
 
-    init(player: AVPlayer, session: SessionViewModel) {
+    private weak var shelf: ShelfViewController?
+
+    init(player: AVPlayer, session: SessionViewModel, shelf: ShelfViewController) {
         sessionViewModel = session
         self.player = player
+        self.shelf = shelf
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -84,15 +87,10 @@ final class VideoPlayerViewController: NSViewController {
     override func loadView() {
         view = NSView(frame: NSRect.zero)
         view.wantsLayer = true
-        view.layer?.backgroundColor = NSColor.black.cgColor
 
         playerView.translatesAutoresizingMaskIntoConstraints = false
         playerView.frame = view.bounds
         view.addSubview(playerView)
-
-        #if ENABLE_CHROMECAST
-        playerView.registerExternalPlaybackProvider(ChromeCastPlaybackProvider.self)
-        #endif
 
         playerView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         playerView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -372,10 +370,6 @@ extension VideoPlayerViewController: PUIPlayerViewAppearanceDelegate {
         return !sessionViewModel.sessionInstance.isCurrentlyLive
     }
 
-    func playerViewShouldShowExternalPlaybackControls(_ playerView: PUIPlayerView) -> Bool {
-        return true
-    }
-
     func playerViewShouldShowFullScreenButton(_ playerView: PUIPlayerView) -> Bool {
         return true
     }
@@ -390,6 +384,14 @@ extension VideoPlayerViewController: PUIPlayerViewAppearanceDelegate {
 
     func playerViewShouldShowBackAndForward30SecondsButtons(_ playerView: PUIPlayerView) -> Bool {
         return Preferences.shared.skipBackAndForwardBy30Seconds
+    }
+
+    func presentDetachedStatus(_ status: DetachedPlaybackStatus, for playerView: PUIPlayerView) {
+        shelf?.presentDetachedStatus(status, for: playerView)
+    }
+
+    func dismissDetachedStatus(_ status: DetachedPlaybackStatus, for playerView: PUIPlayerView) {
+        shelf?.dismissDetachedStatus(status, for: playerView)
     }
 }
 

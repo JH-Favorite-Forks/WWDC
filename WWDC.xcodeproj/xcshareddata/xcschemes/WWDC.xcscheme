@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "1430"
+   LastUpgradeVersion = "1530"
    version = "1.8">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -85,6 +85,10 @@
       <CommandLineArguments>
          <CommandLineArgument
             argument = "-WWDCUseDebugStorage YES"
+            isEnabled = "YES">
+         </CommandLineArgument>
+         <CommandLineArgument
+            argument = "-WWDCDisableUILog YES"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument

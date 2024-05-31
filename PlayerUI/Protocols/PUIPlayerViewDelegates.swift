@@ -18,7 +18,14 @@ public protocol PUIPlayerViewDelegate: AnyObject {
 
 }
 
-public protocol PUIPlayerViewAppearanceDelegate: AnyObject {
+public protocol PUIPlayerViewDetachedStatusPresenter: AnyObject {
+
+    func presentDetachedStatus(_ status: DetachedPlaybackStatus, for playerView: PUIPlayerView)
+    func dismissDetachedStatus(_ status: DetachedPlaybackStatus, for playerView: PUIPlayerView)
+
+}
+
+public protocol PUIPlayerViewAppearanceDelegate: AnyObject, PUIPlayerViewDetachedStatusPresenter {
 
     func playerViewShouldShowTimelineView(_ playerView: PUIPlayerView) -> Bool
     func playerViewShouldShowSubtitlesControl(_ playerView: PUIPlayerView) -> Bool
@@ -27,7 +34,6 @@ public protocol PUIPlayerViewAppearanceDelegate: AnyObject {
     func playerViewShouldShowAnnotationControls(_ playerView: PUIPlayerView) -> Bool
     func playerViewShouldShowBackAndForwardControls(_ playerView: PUIPlayerView) -> Bool
     func playerViewShouldShowTimestampLabels(_ playerView: PUIPlayerView) -> Bool
-    func playerViewShouldShowExternalPlaybackControls(_ playerView: PUIPlayerView) -> Bool
     func playerViewShouldShowFullScreenButton(_ playerView: PUIPlayerView) -> Bool
     func playerViewShouldShowBackAndForward30SecondsButtons(_ playerView: PUIPlayerView) -> Bool
 
